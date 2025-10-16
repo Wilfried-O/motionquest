@@ -1,18 +1,19 @@
+import './App.css';
 import { useEffect, useState } from 'react';
 
-// Inline SearchBar
-//
 function SearchBar({ value, onChange, onClear }) {
     return (
-        <div>
+        <div className="searchbar">
             <input
+                className="search-input"
                 value={value}
                 onChange={e => onChange(e.target.value)}
-                placeholder="Search movies…"
+                placeholder="Type a movie name"
                 aria-label="Search movies"
             />
             {value ? (
                 <button
+                    className="clear-btn"
                     type="button"
                     onClick={onClear}
                     aria-label="Clear search"
@@ -24,8 +25,6 @@ function SearchBar({ value, onChange, onClear }) {
     );
 }
 
-// Inline useDebounce
-//
 function useDebounce(value, delay = 1000) {
     const [debounced, setDebounced] = useState(value);
     useEffect(() => {
@@ -54,11 +53,11 @@ async function searchMovies(query, page = 1) {
 
 // Tiny image URL helper (hardcode a common size; fine for now)
 //
-function posterUrl(path, size = 'w185') {
+function posterUrl(path, size = 'w342') {
     return path ? `https://image.tmdb.org/t/p/${size}${path}` : '';
 }
 
-// Simple movie item (poster, title, year, rating)
+// Movie card (poster on top, title/meta below)
 //
 function MovieItem({ movie }) {
     const year = movie.release_date ? movie.release_date.slice(0, 4) : '—';
@@ -66,49 +65,30 @@ function MovieItem({ movie }) {
         movie.vote_average != null
             ? Number(movie.vote_average).toFixed(1)
             : '—';
-    const poster = posterUrl(movie.poster_path, 'w185');
+    const poster = posterUrl(movie.poster_path, 'w342');
 
     return (
-        <li
-            style={{
-                display: 'grid',
-                gridTemplateColumns: 'auto 1fr',
-                gap: '12px',
-                alignItems: 'center',
-                padding: '8px 0',
-                borderBottom: '1px solid #2222',
-            }}
-        >
+        <li className="movie-card">
             {poster ? (
                 <img
+                    className="poster poster-cover"
                     src={poster}
                     alt={`${movie.title} poster`}
-                    width={80}
-                    height={120}
-                    style={{ objectFit: 'cover', borderRadius: 4 }}
                     loading="lazy"
                 />
             ) : (
                 <div
-                    style={{
-                        width: 80,
-                        height: 120,
-                        background: '#4444',
-                        display: 'grid',
-                        placeItems: 'center',
-                        borderRadius: 4,
-                        fontSize: 12,
-                        color: '#bbb',
-                    }}
+                    className="poster poster-fallback poster-cover"
                     aria-hidden="true"
                 >
                     No Image
                 </div>
             )}
 
-            <div style={{ display: 'grid', gap: 4 }}>
-                <div style={{ fontWeight: 600 }}>{movie.title}</div>
-                <div style={{ opacity: 0.85, fontSize: 14 }}>
+            <div className="card-body">
+                <div className="movie-title clamp-2">{movie.title}</div>{' '}
+                {/* clamp long titles */}
+                <div className="movie-meta">
                     {year} • ⭐ {rating}
                 </div>
             </div>
@@ -121,7 +101,7 @@ function MovieList({ results }) {
         return <p>No results.</p>;
     }
     return (
-        <ul style={{ listStyle: 'none', padding: 0, margin: '12px 0' }}>
+        <ul className="movie-grid">
             {results.map(m => (
                 <MovieItem key={m.id} movie={m} />
             ))}
@@ -135,7 +115,7 @@ export default function App() {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    const debouncedQuery = useDebounce(query); // 1s debounce
+    const debouncedQuery = useDebounce(query, 500); // 500ms delay
 
     useEffect(() => {
         const q = debouncedQuery.trim();
@@ -147,7 +127,7 @@ export default function App() {
             return;
         }
 
-        let cancelled = false;
+        let cancelled = false; // local var to cancel late responses
         setIsLoading(true);
         setError(null);
 
@@ -173,22 +153,19 @@ export default function App() {
     const results = data?.results ?? [];
 
     return (
-        <div style={{ maxWidth: 760, margin: '0 auto', padding: 16 }}>
-            <h1>MotionQuest — Search</h1>
-
+        <div className="mq-container">
+            <h1>MotionQuest — Search a Movie</h1>
             <SearchBar
                 value={query}
                 onChange={setQuery}
                 onClear={() => setQuery('')}
             />
-
-            {isLoading && <p>Loading…</p>}
-            {error && <p style={{ color: 'crimson' }}>{error}</p>}
-
+            {isLoading && <p className="loading">Loading…</p>}
+            {error && <p className="error">{error}</p>}
             {data ? (
                 <MovieList results={results} />
             ) : (
-                <p>Type at least 2 characters…</p>
+                <p className="help-text">Type at least 2 characters…</p>
             )}
         </div>
     );

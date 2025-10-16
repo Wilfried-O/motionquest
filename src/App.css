@@ -1,4 +1,110 @@
-.app-container {
-    text-align: center;
-    margin-top: 1rem;
+/* Container */
+.mq-container {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 16px;
+}
+
+/* Search bar */
+.searchbar {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin: 8px 0 12px;
+}
+.search-input {
+    padding: 8px 10px;
+    min-width: 260px;
+}
+.clear-btn {
+    padding: 6px 8px;
+    cursor: pointer;
+}
+
+/* Grid container */
+.movie-grid {
+    list-style: none;
+    padding: 0;
+    margin: 12px 0;
+
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 12px;
+}
+
+/* Card (light theme) */
+.movie-card {
+    background: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    color: inherit;
+
+    /* Hover lift */
+    transition:
+        transform 0.15s ease,
+        box-shadow 0.15s ease,
+        border-color 0.15s ease;
+}
+.movie-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    border-color: rgba(0, 0, 0, 0.12);
+}
+
+/* Poster */
+.poster {
+    background: #eee;
+    display: block;
+}
+.poster-cover {
+    width: 100%;
+    aspect-ratio: 2 / 3; /* for consistent poster shape */
+    object-fit: cover;
+}
+.poster-fallback {
+    display: grid;
+    place-items: center;
+    font-size: 12px;
+    color: #666;
+    background: #f3f3f3;
+}
+
+/* Card body */
+.card-body {
+    display: grid;
+    gap: 6px;
+    padding: 8px;
+}
+
+/* Details */
+.movie-title {
+    font-weight: 600;
+    line-height: 1.2;
+}
+.movie-meta {
+    opacity: 0.85;
+    font-size: 14px;
+}
+
+.clamp-2 {
+    line-clamp: 2;
+    -webkit-line-clamp: 2;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Error messages */
+.loading {
+    opacity: 0.8;
+}
+.error {
+    color: crimson;
+}
+.help-text {
+    opacity: 0.7;
 }
