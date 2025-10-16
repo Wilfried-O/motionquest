@@ -21,6 +21,16 @@
     cursor: pointer;
 }
 
+/* Favorites filter toggle */
+.fav-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    opacity: 0.9;
+    margin: 4px 0 8px;
+}
+
 /* Grid container */
 .movie-grid {
     list-style: none;
@@ -90,6 +100,38 @@
     font-size: 14px;
 }
 
+/* Favorite chip */
+.fav-chip {
+    align-self: start;
+    margin-top: 4px;
+    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: 999px;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    background: #fff;
+    cursor: pointer;
+    transition:
+        background 0.12s ease,
+        border-color 0.12s ease;
+}
+
+.fav-chip.active {
+    color: #d72638;
+    background: rgba(215, 38, 56, 0.08);
+    border-color: rgba(215, 38, 56, 0.3);
+}
+
+.fav-chip:hover {
+    background: #f2f2f2; /* grey-ish */
+    border-color: rgba(0, 0, 0, 0.28); /* darker border */
+}
+
+.fav-chip.active:hover {
+    background: #ececec;
+    border-color: rgba(0, 0, 0, 0.32);
+}
+
+/* Multiline clamp for long movie titles*/
 .clamp-2 {
     line-clamp: 2;
     -webkit-line-clamp: 2;
@@ -98,7 +140,7 @@
     overflow: hidden;
 }
 
-/* Error messages */
+/* Error Messages */
 .loading {
     opacity: 0.8;
 }

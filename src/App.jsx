@@ -1,6 +1,25 @@
 import './App.css';
 import { useEffect, useState } from 'react';
 
+function useLocalStorage(key, initialValue) {
+    const [value, setValue] = useState(() => {
+        try {
+            const raw = localStorage.getItem(key);
+            return raw !== null ? JSON.parse(raw) : initialValue;
+        } catch {
+            return initialValue;
+        }
+    });
+    useEffect(() => {
+        try {
+            localStorage.setItem(key, JSON.stringify(value));
+        } catch {
+            /*do nothing*/
+        }
+    }, [key, value]);
+    return [value, setValue];
+}
+
 function SearchBar({ value, onChange, onClear }) {
     return (
         <div className="searchbar">
@@ -35,7 +54,6 @@ function useDebounce(value, delay = 1000) {
 }
 
 // TMDB search (v3)
-//
 async function searchMovies(query, page = 1) {
     const API_KEY = process.env.REACT_APP_TMDB_API_KEY;
     if (!API_KEY) throw new Error('Missing REACT_APP_TMDB_API_KEY');
@@ -51,15 +69,13 @@ async function searchMovies(query, page = 1) {
     return res.json();
 }
 
-// Tiny image URL helper (hardcode a common size; fine for now)
-//
+// image URL helper (hardcode a common size; OK for now)
 function posterUrl(path, size = 'w342') {
     return path ? `https://image.tmdb.org/t/p/${size}${path}` : '';
 }
 
-// Movie card (poster on top, title/meta below)
-//
-function MovieItem({ movie }) {
+// Movie card
+function MovieItem({ movie, isFavorite, onToggleFavorite }) {
     const year = movie.release_date ? movie.release_date.slice(0, 4) : '—';
     const rating =
         movie.vote_average != null
@@ -86,24 +102,43 @@ function MovieItem({ movie }) {
             )}
 
             <div className="card-body">
-                <div className="movie-title clamp-2">{movie.title}</div>{' '}
-                {/* clamp long titles */}
+                <div className="movie-title clamp-2">{movie.title}</div>
                 <div className="movie-meta">
                     {year} • ⭐ {rating}
                 </div>
+
+                <button
+                    type="button"
+                    className={`fav-chip ${isFavorite ? 'active' : ''}`}
+                    onClick={() => onToggleFavorite(movie.id)}
+                    aria-pressed={isFavorite}
+                    aria-label={
+                        isFavorite
+                            ? 'Remove from favorites'
+                            : 'Add to favorites'
+                    }
+                    title={isFavorite ? 'Remove from favorites' : ''}
+                >
+                    {isFavorite ? '♥' : 'Add to favorites'}
+                </button>
             </div>
         </li>
     );
 }
 
-function MovieList({ results }) {
+function MovieList({ results, favSet, onToggleFavorite }) {
     if (!Array.isArray(results) || results.length === 0) {
         return <p>No results.</p>;
     }
     return (
         <ul className="movie-grid">
             {results.map(m => (
-                <MovieItem key={m.id} movie={m} />
+                <MovieItem
+                    key={m.id}
+                    movie={m}
+                    isFavorite={favSet.has(m.id)}
+                    onToggleFavorite={onToggleFavorite}
+                />
             ))}
         </ul>
     );
@@ -117,6 +152,15 @@ export default function App() {
 
     const debouncedQuery = useDebounce(query, 500); // 500ms delay
 
+    // Persist favorites (array of movie IDs)
+    const [favoriteIds, setFavoriteIds] = useLocalStorage(
+        'motionquest:favs',
+        []
+    );
+    const favSet = new Set(favoriteIds);
+
+    const [showFavsOnly, setShowFavsOnly] = useState(false);
+
     useEffect(() => {
         const q = debouncedQuery.trim();
 
@@ -127,7 +171,7 @@ export default function App() {
             return;
         }
 
-        let cancelled = false; // local var to cancel late responses
+        let cancelled = false;
         setIsLoading(true);
         setError(null);
 
@@ -152,18 +196,49 @@ export default function App() {
 
     const results = data?.results ?? [];
 
+    const visibleResults = !showFavsOnly
+        ? results
+        : results.filter(m => favSet.has(m.id));
+
+    // Toggle favorite ID and persist
+    function handleToggleFavorite(id) {
+        setFavoriteIds(prev => {
+            const set = new Set(prev);
+            if (set.has(id)) set.delete(id);
+            else set.add(id);
+            return Array.from(set);
+        });
+    }
+
     return (
         <div className="mq-container">
             <h1>MotionQuest — Search a Movie</h1>
+
             <SearchBar
                 value={query}
                 onChange={setQuery}
                 onClear={() => setQuery('')}
             />
+
+            {results.length > 0 && (
+                <label className="fav-toggle">
+                    <input
+                        type="checkbox"
+                        checked={showFavsOnly}
+                        onChange={e => setShowFavsOnly(e.target.checked)}
+                    />
+                    Show favorites only
+                </label>
+            )}
+
             {isLoading && <p className="loading">Loading…</p>}
             {error && <p className="error">{error}</p>}
             {data ? (
-                <MovieList results={results} />
+                <MovieList
+                    results={visibleResults}
+                    favSet={favSet}
+                    onToggleFavorite={handleToggleFavorite}
+                />
             ) : (
                 <p className="help-text">Type at least 2 characters…</p>
             )}
