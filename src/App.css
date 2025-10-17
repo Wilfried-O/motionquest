@@ -52,6 +52,7 @@
     flex-direction: column;
     min-height: 100%;
     color: inherit;
+    cursor: pointer;
 
     /* Hover lift */
     transition:
@@ -149,4 +150,98 @@
 }
 .help-text {
     opacity: 0.7;
+}
+/* Modal */
+.mq-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 12, 16, 0.6);
+    backdrop-filter: blur(2px);
+    display: grid;
+    place-items: center;
+    padding: 16px;
+    z-index: 1000;
+}
+
+.mq-modal {
+    width: min(920px, 100%);
+    background: #fff;
+    color: #111;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 22px 60px rgba(0, 0, 0, 0.35);
+}
+
+.mq-modal-hero {
+    height: 180px;
+    background: #222;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+.mq-close-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 36px;
+    height: 36px;
+    border: 0;
+    border-radius: 999px;
+    font-size: 22px;
+    line-height: 1;
+    cursor: pointer;
+    color: #111;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+.mq-close-btn:hover {
+    background: #fff;
+}
+
+.mq-modal-body {
+    padding: 14px 16px 16px;
+}
+
+.mq-modal-grid {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 16px;
+}
+@media (max-width: 640px) {
+    .mq-modal-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.mq-modal-poster .poster {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    object-fit: cover;
+    background: #eee;
+}
+
+.mq-modal-title {
+    font-size: 22px;
+    line-height: 1.2;
+    margin-bottom: 6px;
+}
+.mq-year {
+    font-weight: 500;
+    opacity: 0.75;
+}
+
+.mq-meta-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    font-size: 14px;
+    opacity: 0.9;
+    margin-bottom: 8px;
+}
+
+.mq-overview {
+    line-height: 1.5;
+    opacity: 0.95;
 }
