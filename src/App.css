@@ -5,6 +5,46 @@
     padding: 16px;
 }
 
+/* AppHeader */
+.mq-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 4px 0 10px;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: inherit;
+}
+
+.brand-col {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.brand-text {
+    font-size: 22px; /* similar to modal title scale */
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.brand-sub {
+    font-size: 12px;
+    opacity: 0.75;
+    line-height: 1.2;
+}
+
+@media (max-width: 420px) {
+    /* hide subtitle on very small screens */
+    .brand-sub {
+        display: none;
+    }
+}
+
 /* Search bar */
 .searchbar {
     display: flex;
@@ -27,7 +67,7 @@
     justify-content: space-between;
     gap: 12px;
     margin: 6px 0 10px;
-    flex-wrap: wrap; /* nice on small screens */
+    flex-wrap: wrap; /* for small screens */
 }
 
 .sortbar {

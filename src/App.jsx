@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 import SearchBar from './components/SearchBar';
 import MovieGrid from './components/MovieGrid';
 import MovieModal from './components/MovieModal';
+import AppHeader from './components/AppHeader';
 
 import { useLocalStorage } from './hooks/useLocalStorage';
 import { useDebounce } from './hooks/useDebounce';
@@ -143,7 +144,7 @@ export default function App() {
 
     return (
         <div className="mq-container">
-            <h1>MotionQuest — Search a Movie</h1>
+            <AppHeader title="MotionQuest" subtitle="" />
 
             <SearchBar
                 value={query}
