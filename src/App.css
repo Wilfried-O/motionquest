@@ -176,9 +176,11 @@
 
 /* Card body */
 .card-body {
-    display: grid;
+    display: flex;
+    flex-direction: column;
     gap: 6px;
     padding: 8px;
+    flex: 1; /* let it fill remaining height under the poster */
 }
 
 /* Details */
@@ -193,8 +195,7 @@
 
 /* Favorite chip */
 .fav-chip {
-    align-self: start;
-    margin-top: 4px;
+    margin-top: auto;
     font-size: 12px;
     padding: 4px 8px;
     border-radius: 999px;
@@ -229,6 +230,8 @@
     display: -webkit-box;
     -webkit-box-orient: vertical;
     overflow: hidden;
+
+    min-height: calc(2 * 1.2em); /* 1.2 = .movie-title line-height */
 }
 
 /* Error Messages */

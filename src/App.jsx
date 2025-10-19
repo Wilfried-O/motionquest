@@ -160,13 +160,12 @@ export default function App() {
                         role="group"
                         aria-label="Sort results"
                     >
-                        <span className="sort-label">Sort</span>
+                        <span className="sort-label">Sort by</span>
                         <select
                             className="sort-select"
                             value={sortBy}
                             onChange={e => setSortBy(e.target.value)}
                             aria-label="Sort by"
-                            title="Sort by"
                         >
                             <option value={SORT_BY.RATING}>Rating</option>
                             <option value={SORT_BY.YEAR}>Year</option>
