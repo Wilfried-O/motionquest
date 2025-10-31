@@ -2,13 +2,19 @@
 
 Search your next film to watch.
 
-![App Preview](preview-app-movie-list.png)
+| ![App Preview](preview-app-movie-list.png) |
+| :----------------------------------------: |
+|        _Image 1 — Search results._         |
 
-![App Preview](preview-app-movie-detail.png)
+| ![App Preview](preview-app-movie-detail.png) |
+| :------------------------------------------: |
+|          _Image 2 — movie details._          |
 
 ## 📚 Overview
 
 **MotionQuest** is a lightweight movie search app built with **React.js**.
+
+The project is deployed to a Vercel website [(Click here)](motionquest.vercel.app) for you to test the app right away!
 
 ---
 
@@ -24,7 +30,7 @@ Search your next film to watch.
 
 ## 🛠️ Tech Stack
 
-- **Frontend:** React.js
+- **Frontend:** React.js v.19
 - **Styling:** CSS
 - **Data:** TMDB API (v3)
 - **Data Storage:** localStorage
@@ -95,11 +101,12 @@ Search your next film to watch.
     - Sorting (rating/year, asc/desc)
 
 - ⚙️ **Work in Progress:**
-    - Refactoring and cleanup (add CSS Modules for components)
-    - Improve styling to make the look more polished
+    - UI improvement: polish the look and add icons
+    - Maintenance: major refactoring (component extraction, CSS modules, etc.)
 
 ### 🧭 Next Steps
 
+- Enhance movie details view: include actor/director names, polish movie duration time format
 - Add dark mode
 - Support French language
 
