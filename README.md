@@ -14,7 +14,7 @@ Search your next film to watch.
 
 **MotionQuest** is a lightweight movie search app built with **React.js**.
 
-The project is deployed to a Vercel website [(Click here)](motionquest.vercel.app) for you to test the app right away!
+The project is deployed to a Vercel website [(Click here)](https://motionquest.vercel.app/) for you to test the app right away!
 
 ---
 
